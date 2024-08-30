@@ -18,12 +18,12 @@ const TICKS_PER_FRAME: usize = 10;
 
 fn main() {
     let args: Vec<_> = env::args().collect();
+
     if args.len() != 2 {
         println!("Usage: cargo run path/to/game");
         return;
     }
 
-    // Setup SDL
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
     let window = video_subsystem
@@ -76,20 +76,16 @@ fn main() {
 }
 
 fn draw_screen(emu: &Emu, canvas: &mut Canvas<Window>) {
-    // Clear canvas as black
     canvas.set_draw_color(Color::RGB(0, 0, 0));
     canvas.clear();
 
     let screen_buf = emu.get_display();
-    // Now set draw color to white, iterate through each point and see if it should be drawn
     canvas.set_draw_color(Color::RGB(255, 255, 255));
     for (i, pixel) in screen_buf.iter().enumerate() {
         if *pixel {
-            // Convert our 1D array's index into a 2D (x,y) position
             let x = (i % SCREEN_WIDTH) as u32;
             let y = (i / SCREEN_WIDTH) as u32;
 
-            // Draw a rectangle at (x,y), scaled up by our SCALE value
             let rect = Rect::new((x * SCALE) as i32, (y * SCALE) as i32, SCALE, SCALE);
             canvas.fill_rect(rect).unwrap();
         }
