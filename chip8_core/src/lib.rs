@@ -87,9 +87,7 @@ impl Emu {
     }
 
     pub fn tick(&mut self) {
-        // Fetch
         let op = self.fetch();
-        // Decode & execute
         self.execute(op);
     }
 
